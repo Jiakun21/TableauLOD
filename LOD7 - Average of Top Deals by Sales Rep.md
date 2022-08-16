@@ -1,9 +1,16 @@
-# Average of Top Deals by Sales Rep
-
-Link: https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD7-AverageofTopDealsbySalesRep/Dashboard
+# [Average of Top Deals by Sales Rep](https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD7-AverageofTopDealsbySalesRep/Dashboard)
 
 ```SQL
+Select 
+    Country, SalesRep,
+    Round(Max(Sales)) as Top_Deal,
+    Round(Avg(Max(Sales)) Over(Partition by Country)) as Avg_Top_Deal
+From lod7
+-- Where Country Like 'Mau%'
+Group by Country, SalesRep
+Order by Country, Top_Deal Desc
 
+-- Group by + Window Func
 ```
 
 ## Result
