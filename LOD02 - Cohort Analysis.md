@@ -1,6 +1,4 @@
-# Cohort Analysis
-
-Link: https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD2-CohortAnalysis_16588895834750/CohortAnalysis
+# [Cohort Analysis](https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD2-CohortAnalysis_16588895834750/CohortAnalysis)
 
 ```sql
 With Customer_Cohort as (
