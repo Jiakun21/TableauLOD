@@ -1,6 +1,4 @@
-# Customer Order Frequency
-
-Link: https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD1-CustomerOrderFrequency_16588880333730/CustomerOrderFrequency
+# [Customer Order Frequency](https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD1-CustomerOrderFrequency_16588880333730/CustomerOrderFrequency)
 
 ```sql
 With Orders_per_Customer as (
