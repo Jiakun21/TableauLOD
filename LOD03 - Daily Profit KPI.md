@@ -1,6 +1,4 @@
-# Daily Profit KPI
-
-Link: https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD3-DailyProfitKPI_16588909744770/DailyProfitKPI
+# [Daily Profit KPI](https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD3-DailyProfitKPI_16588909744770/DailyProfitKPI)
 
 ```SQL
 With Daily_Profit_KPI as (
