@@ -1,6 +1,4 @@
-# Percent of Total
-
-Link: https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD4-PercentofTotal_16589750230440/PercentofTotal
+# [Percent of Total](https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD4-PercentofTotal_16589750230440/PercentofTotal)
 
 ```sql
 Select Country, Market,
