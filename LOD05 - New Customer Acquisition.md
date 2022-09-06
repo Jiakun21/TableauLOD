@@ -1,6 +1,4 @@
-# New Customer Acquisition
-
-Link: https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD5-NewCustomerAcquisition_16589761093450/NewCustomerAcquisition
+# [New Customer Acquisition](https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD5-NewCustomerAcquisition_16589761093450/NewCustomerAcquisition)
 
 ```SQL
 Select Distinct Market, OrderDate,
