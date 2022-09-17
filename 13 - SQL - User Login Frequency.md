@@ -1,4 +1,4 @@
-# [User Login Frequency](https://public.tableau.com/app/profile/jiakun.zheng/viz/LOD13-UserLoginFrequency/UserLoginFrequency)
+# User Login Frequency
 
 ```SQL
 -- Total_Months = Last_Login - First_Login
@@ -12,7 +12,7 @@ Select
     Period_Diff(Date_Format(Max(LoginDate),'%Y%m'), Date_Format(Min(LoginDate),'%Y%m')) as Total_Months,
     Count(Distinct LoginDate) as Total_Logins
 From lod13
-Group by UserID)
+Group by UserID，Market)
 
 Select 
     s.Market,
@@ -28,10 +28,3 @@ From Stats s Left Join
                  Group by Market) t Using(Market)
 Group by s.Market, Round(Total_Months/Total_Logins)
 ```
-
-## Result
-
-<div class='tableauPlaceholder' id='viz1660759675256' style='position: relative'><noscript><a href='#'><img
-                alt='User Login Frequency-- What percent of users log in once every month, 2 months, N months? '
-                src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LO&#47;LOD13-UserLoginFrequency&#47;UserLoginFrequency&#47;1_rss.png'
-                style='border: none' /></a></noscript></div>
