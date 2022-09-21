@@ -36,3 +36,6 @@ Return
 ```
 
 # Result
+
+![DAX12](https://user-images.githubusercontent.com/79496040/191628322-46f648d9-414c-4a20-9994-ab3c5ee057e7.gif)
+
