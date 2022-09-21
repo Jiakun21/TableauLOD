@@ -18,3 +18,5 @@ SelCountry = SELECTEDVALUE(PQ[Country],"NONE")
 ```
 
 # Result
+
+![PQ14](https://user-images.githubusercontent.com/79496040/191626196-047f92e4-363f-49c5-bff0-2a7c630d9f27.gif)
