@@ -29,3 +29,5 @@ Total_Users = CALCULATE(DISTINCTCOUNT('DAX-Stats'[UserID]),ALLEXCEPT('DAX-Stats'
 ```
 
 # Result
+
+![DAX13](https://user-images.githubusercontent.com/79496040/191627214-1fc751fc-8ca9-4e67-ba9d-b83429fc19ad.gif)
