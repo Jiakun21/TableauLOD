@@ -32,3 +32,9 @@ OrderYear = YEAR('DAX'[OrderDate])
 ```
 
 # Result
+
+![DAX15](https://user-images.githubusercontent.com/79496040/191603726-8fb2c907-d85e-465e-b123-78a727919eba.gif)
+
+### Notes
+
+Power BI might have some issues customizing tooltips in Line chart with Legend. This issue does not happend in Line and Clustered Column chart with Legend.
