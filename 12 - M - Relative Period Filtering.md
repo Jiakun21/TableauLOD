@@ -12,15 +12,16 @@ let
     #"Filtered Rows" = Table.SelectRows(#"Inserted Year", each [DayofYear] <= MaxDateinYear),
     #"Grouped Year_WeekNum" = Table.Group(#"Filtered Rows", {"Year", "WeekofYear"}, {{"Profit", each List.Sum([Profit]), type nullable number}}),
     #"Grouped Year" = Table.Group(#"Grouped Year_WeekNum", {"Year"}, {{"tbl", each _, type table [Year=number, WeekofYear=number, Profit=nullable number]}}),
+    
     //Function to Calculate Running Totals
-RunTotal = ( RunTable as table) as table =>
+    RunTotal = ( RunTable as table) as table =>
 let
 	#"Added Index" = Table.AddIndexColumn(RunTable, "Index", 1, 1, Int64.Type),
 	#"Added RunningTotal" = Table.AddColumn(#"Added Index", "RT", each List.Sum(List.FirstN(#"Added Index"[Profit], [Index])))
 in
 	#"Added RunningTotal",
 
-//Call the Function
+    //Call the Function
     RunTotals = Table.TransformColumns(#"Grouped Year", {"tbl", each RunTotal(_)}),
     #"Removed Other Columns" = Table.SelectColumns(RunTotals,{"tbl"}),
     #"Expanded tbl" = Table.ExpandTableColumn(#"Removed Other Columns", "tbl", {"Year", "WeekofYear", "Profit", "RT"}, {"Year", "WeekofYear", "Profit", "RT"}),
