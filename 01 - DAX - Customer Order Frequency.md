@@ -7,3 +7,5 @@ Return SUMMARIZE(Orders_per_Customer, [Total_Orders], "Frequency", DISTINCTCOUNT
 ```
 
 # Result
+
+![DAX01](https://user-images.githubusercontent.com/79496040/191597514-1e356c04-0f2e-4326-914c-8b923c257069.gif)
