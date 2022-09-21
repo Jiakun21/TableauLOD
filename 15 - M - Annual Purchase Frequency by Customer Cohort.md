@@ -37,3 +37,9 @@ in
 ```
 
 # Result
+
+![PQ15](https://user-images.githubusercontent.com/79496040/191602306-be47b1fc-1e13-438b-9d03-6122dabb71e4.gif)
+
+### Notes
+
+Power BI might have some issues customizing tooltips in Line chart with Legend. This issue does not happend in Line and Clustered Column chart with Legend.
