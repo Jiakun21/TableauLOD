@@ -21,3 +21,5 @@ BG = SWITCH(SELECTEDVALUE('PQ'[Ticker]),"FIRE","#ff7f0e","SYMC","#ffc156","#17be
 ```
 
 # Result
+
+![PQ09](https://user-images.githubusercontent.com/79496040/191635704-71d08233-fbea-46ec-b1bc-0eb6def674e2.gif)
