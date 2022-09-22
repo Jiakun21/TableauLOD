@@ -13,3 +13,5 @@ Year_Mon = DATE(YEAR('DAX'[Date]),MONTH('DAX'[Date]),1)
 ```
 
 # Result
+
+![DAX09](https://user-images.githubusercontent.com/79496040/191636020-2c2d32f2-24bc-4f35-a07d-f890ed2f76e6.gif)
