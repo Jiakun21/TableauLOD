@@ -29,3 +29,5 @@ Pct_Prod_Profit_GT_Target = 'DAX-B2'[Num_Prod_Profit_GT_Target]/'DAX-B2'[Num_Pro
 ```
 
 # Result
+
+![DAX08](https://user-images.githubusercontent.com/79496040/191637548-ab6813eb-a7ed-4271-b652-2c45a67a2f1c.gif)
