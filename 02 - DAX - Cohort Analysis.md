@@ -12,3 +12,5 @@ Return DIVIDE(SalesTotal,CohortTotal)
 ```
 
 # Result
+
+![DAX02](https://user-images.githubusercontent.com/79496040/191820713-186895f8-8ccc-44b6-9821-34d2e7da4922.gif)
