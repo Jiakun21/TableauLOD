@@ -9,3 +9,5 @@ Return ADDCOLUMNS(Daily_Profit,"Profit_KPI",SWITCH(TRUE,[Daily_Profit] > 2000,"H
 ```
 
 # Result
+
+![DAX03](https://user-images.githubusercontent.com/79496040/191813846-adf5c6bd-d4a6-458e-9e85-0eaa941a1261.gif)
