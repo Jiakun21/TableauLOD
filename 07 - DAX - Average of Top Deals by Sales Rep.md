@@ -16,3 +16,5 @@ Title2 = IF(HASONEVALUE('Dax'[Country]),SELECTEDVALUE('DAX'[Country]),"All")
 ```
 
 # Result
+
+![DAX07](https://user-images.githubusercontent.com/79496040/191638710-0a048b39-2786-426f-82f7-c66e1b5bf38b.gif)
