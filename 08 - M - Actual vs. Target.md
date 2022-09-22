@@ -27,3 +27,5 @@ SelState = SELECTEDVALUE('PQ-B12'[State],"ALL")
 ```
 
 # Result
+
+![PQ08](https://user-images.githubusercontent.com/79496040/191637138-ffef4993-ae91-4b0e-88ac-12f457080318.gif)
