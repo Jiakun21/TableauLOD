@@ -18,3 +18,5 @@ BG = SWITCH(SELECTEDVALUE('PQ'[Profit_KPI]),"Highly Profitable","Green","UnProfi
 ```
 
 # Result
+
+![PQ03](https://user-images.githubusercontent.com/79496040/191813382-2a5264e7-f48c-4b44-9bfb-990a12a97809.gif)
