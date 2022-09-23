@@ -53,6 +53,7 @@ L1 = (
                 label_opts = opts.LabelOpts(is_show = False), 
                 areastyle_opts=opts.AreaStyleOpts(opacity=0.5))
     .set_global_opts(
+        xaxis_opts = opts.AxisOpts(is_show = False),
         title_opts = opts.TitleOpts(
             title = "Daily Profit KPI",
             subtitle = "How many days each month are highly profitable, profitable, or unprofitable?"),
@@ -72,6 +73,7 @@ L2 = (
                 label_opts = opts.LabelOpts(is_show = False), 
                 areastyle_opts=opts.AreaStyleOpts(opacity=0.5))
     .set_global_opts(
+        xaxis_opts = opts.AxisOpts(is_show = False),
         legend_opts = opts.LegendOpts(pos_left = "46%"))
 )
 
@@ -90,7 +92,7 @@ L3 = (
 )
 
 (
-    Grid(init_opts = opts.InitOpts(width = "1000px", height = "750px"))
+    Grid(init_opts = opts.InitOpts(width = "1000px", height = "550px"))
     .add(
         chart = L1, 
         grid_opts = opts.GridOpts(pos_left = 50, pos_right = 50, height = "20%"))
@@ -105,3 +107,5 @@ L3 = (
 ```
 
 # Result
+
+![PY03](https://user-images.githubusercontent.com/79496040/191877273-0f284ca9-a49d-4be0-9c27-e1991305643b.gif)
