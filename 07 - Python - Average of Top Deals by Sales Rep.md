@@ -104,3 +104,10 @@ b
 
 # Result
 
+![PY07A](https://user-images.githubusercontent.com/79496040/192006336-26a9c421-51c8-4f75-ba84-9e5152f707cb.gif)
+
+![PY07B](https://user-images.githubusercontent.com/79496040/192008610-a90e7312-59cf-45a5-b89d-1f6f0d41ff2f.gif)
+
+### Comments
+
+To-Do: Build a connection between Map() object and Bar() object
