@@ -38,13 +38,25 @@ pvt = grp_YearWeeknum.pivot(index = "WeekNum", columns = "Year", values = "Runni
 pvt.columns = ['WeekNum','PreYear','CurYear']
 pvt['Diff'] = (pvt['CurYear'] - pvt['PreYear']).round(2)
 
+js_chart1 = """function (x) {
+        console.log(x);
+        return 'The difference in year to date profit in <b>2014</b> vs. <b>2013</b> in <b>week ' + x.value[0] + '</b> is <b>$' + x.value[1] + '</b>. ';
+    }"""
+js_chart2 = """function (x) {
+        console.log(x);
+        return 'Year to date sales in <b>week ' + x.value[0] + '</b> of <b>' + x.seriesName + '</b> are <b>$' + x.value[1] + '</b>. ';
+    }"""
+
+
 # Line Chart 1
 L1 = (
     Line()
     .add_xaxis(pvt.WeekNum.tolist())
     .add_yaxis("", 
                pvt.Diff.tolist(), 
-               is_symbol_show = False,
+               tooltip_opts = opts.TooltipOpts(
+                        trigger = "item", 
+                        formatter = JsCode(js_chart1)),
                label_opts = opts.LabelOpts(is_show = False),
                linestyle_opts = opts.LineStyleOpts(color = "#42f5ec", width = 3),
                itemstyle_opts=opts.ItemStyleOpts(color = "#42f5ec"),
@@ -67,13 +79,17 @@ L2 = (
     .add_xaxis(WeekNum)
     .add_yaxis(str(Years[0]), 
                Pre_RT, 
-               is_symbol_show = False,
+               tooltip_opts = opts.TooltipOpts(
+                        trigger = "item", 
+                        formatter = JsCode(js_chart2)),
                linestyle_opts = opts.LineStyleOpts(color = "#f5f52c", width = 3),
                itemstyle_opts=opts.ItemStyleOpts(color = "#f5f52c"),
                label_opts = opts.LabelOpts(is_show = False))
     .add_yaxis(str(Years[1]), 
                Cur_RT,
-               is_symbol_show = False,
+               tooltip_opts = opts.TooltipOpts(
+                        trigger = "item", 
+                        formatter = JsCode(js_chart1)),
                linestyle_opts = opts.LineStyleOpts(color = "#f59a2c", width = 3),
                itemstyle_opts=opts.ItemStyleOpts(color = "#f59a2c"), 
                label_opts = opts.LabelOpts(is_show = False))
@@ -102,3 +118,6 @@ G
 ```
 
 # Result
+
+![PY12](https://user-images.githubusercontent.com/79496040/192039811-b68abd56-0fcf-454f-b9a4-b5308948d52f.gif)
+
