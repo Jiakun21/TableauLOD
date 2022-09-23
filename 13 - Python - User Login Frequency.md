@@ -104,3 +104,9 @@ pn.Column(Sel_Market, plot).servable()
 ```
 
 # Result
+
+![PY13](https://user-images.githubusercontent.com/79496040/191998645-4a3671be-ff46-45cb-b6d8-178cd5fe13b9.gif)
+
+### Comments
+
+To-Do: Color Formatting on Bars
