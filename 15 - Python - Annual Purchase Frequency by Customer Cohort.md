@@ -146,3 +146,9 @@ pn.Column(Sel_Year, plot).servable()
 ```
 
 # Result
+
+![PY15](https://user-images.githubusercontent.com/79496040/192001052-6c509c59-c3d4-4e00-b578-67d99057c463.gif)
+
+### Comments
+
+There seems to be connectivity issue between Panel and JsCode, resulting in failure to customize tooltips on item level.
