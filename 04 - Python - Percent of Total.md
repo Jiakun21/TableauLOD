@@ -38,3 +38,9 @@ M
 ```
 
 # Result
+
+![PY04](https://user-images.githubusercontent.com/79496040/191878554-c113fe3d-bbd4-4a16-a18f-32708403cc6b.gif)
+
+### Comments
+
+Panel might not work with Map() object.
