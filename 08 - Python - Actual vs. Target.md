@@ -49,9 +49,10 @@ b1 = (Bar()
         .add_xaxis(State)
         .add_yaxis('', 
                    Diff,
-                   itemstyle_opts = opts.ItemStyleOpts(
-                       color = JsCode(js_color)   # Color formatting
-                                                    ),
+                   tooltip_opts = opts.TooltipOpts(
+                            trigger = "item", 
+                            formatter = "In <b>{b}</b> the difference between actual and target is <b>${c}</b>."),
+                   itemstyle_opts = opts.ItemStyleOpts(color = JsCode(js_color)),
                     )
         .reversal_axis()
         .set_series_opts(label_opts = opts.LabelOpts(is_show = False))
@@ -74,10 +75,10 @@ b2 = (Bar()
         .add_xaxis(State)
         .add_yaxis('', 
                    Pct,
-                   #yaxis_index = 1,
-                   itemstyle_opts = opts.ItemStyleOpts(
-                       color = '#d6d2d2'
-                                                    ),
+                   tooltip_opts = opts.TooltipOpts(
+                        trigger = "item", 
+                        formatter = "In <b>{b}</b> the percentage products above target is <b>{c}%</b>."),
+                   itemstyle_opts = opts.ItemStyleOpts(color = '#d6d2d2'),
                     )
         .reversal_axis()
         .set_series_opts(label_opts = opts.LabelOpts(is_show = False))
@@ -123,11 +124,11 @@ grid = (
     Grid(init_opts = opts.InitOpts(width = "900px", height = "500px"))
     .add(
         b1, 
-        grid_opts = opts.GridOpts(pos_right = "58%", pos_bottom = "60%"), 
+        grid_opts = opts.GridOpts(pos_right = "58%", pos_bottom = "50%"), 
         )
     .add(
         b2, 
-        grid_opts = opts.GridOpts(pos_left = "58%", pos_bottom = "60%"), 
+        grid_opts = opts.GridOpts(pos_left = "58%", pos_bottom = "50%"), 
         )
     .add(
         b3, 
@@ -141,8 +142,8 @@ grid
 
 # Result
 
-![PY08](https://user-images.githubusercontent.com/79496040/192027258-3dba127c-cc67-41b2-9cb2-781c61f3409f.gif)
+![PY08](https://user-images.githubusercontent.com/79496040/192030251-729b8c46-deb7-4c96-8b81-2c3fb292a250.gif)
 
 ### Comments
 
-To-Do: Build a connection between different Bar() objects; Customize tooltips
+To-Do: Build a connection between different Bar() objects; 
