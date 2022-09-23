@@ -126,3 +126,13 @@ grid = (
 
 grid
 ```
+
+# Result
+
+![PY14A](https://user-images.githubusercontent.com/79496040/192023840-a297e483-fd3c-4939-9220-70be9d7a4b10.gif)
+
+![PY14B](https://user-images.githubusercontent.com/79496040/192024981-19c07602-2f71-4ecd-9ea7-6c909153ca40.gif)
+
+### Comments
+
+To-Do: Build a connection between Map() object and Bar() objects
