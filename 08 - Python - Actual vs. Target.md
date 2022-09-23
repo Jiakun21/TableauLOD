@@ -140,3 +140,9 @@ grid
 ```
 
 # Result
+
+![PY08](https://user-images.githubusercontent.com/79496040/192027258-3dba127c-cc67-41b2-9cb2-781c61f3409f.gif)
+
+### Comments
+
+To-Do: Build a connection between different Bar() objects; Customize tooltips
