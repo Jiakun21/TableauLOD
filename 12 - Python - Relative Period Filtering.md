@@ -59,7 +59,7 @@ L1 = (
                         formatter = JsCode(js_chart1)),
                label_opts = opts.LabelOpts(is_show = False),
                linestyle_opts = opts.LineStyleOpts(color = "#42f5ec", width = 3),
-               itemstyle_opts=opts.ItemStyleOpts(color = "#42f5ec"),
+               itemstyle_opts = opts.ItemStyleOpts(color = "#42f5ec"),
                areastyle_opts = opts.AreaStyleOpts(opacity = 0.5))
     .set_global_opts(
         xaxis_opts = opts.AxisOpts(
