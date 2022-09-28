@@ -2,148 +2,182 @@
 
 ```PY
 import pandas as pd
-import numpy as np
 
-import panel as pn
-from panel.interact import interact
-pn.extension('echarts')
-
-from pyecharts.globals import CurrentConfig, NotebookType
-CurrentConfig.NOTEBOOK_TYPE = NotebookType.JUPYTER_NOTEBOOK
-
-from pyecharts import options as opts
-from pyecharts.charts import Line, Bar, Grid
-from pyecharts.commons.utils import JsCode
+import streamlit as st
+from streamlit_echarts import st_echarts
 
 df = pd.read_csv('lod08.csv', sep = '\t')
 
+# hbar - left
 grp_Prod_State = df.groupby(['State','Product']).sum()[['Profit','TargetProfit']]
 grp_Prod_State['Diff'] = grp_Prod_State['Profit'] - grp_Prod_State['TargetProfit']
 grp_Prod_State['Num_Prod_Profit_GT_Target'] = grp_Prod_State['Diff'].apply(lambda x : 1 if x > 0 else 0)
 grp_Prod_State = grp_Prod_State.reset_index()
 
+# hbar - right
 grp_State = grp_Prod_State.groupby(['State']).agg({'Diff':'sum','Num_Prod_Profit_GT_Target':'sum','Product':'count'})
 grp_State['Pct_Prod_Profit_GT_Target'] = (grp_State['Num_Prod_Profit_GT_Target']/grp_State['Product']).mul(100).round(1)
 grp_State = grp_State.sort_values(by = 'Diff', ascending = True)[['Diff','Pct_Prod_Profit_GT_Target']]
-
-grp_Prod = df.groupby(['Product']).sum()[['Profit','TargetProfit']]
-grp_Prod = grp_Prod.sort_values(by = 'Profit', ascending = False)
 
 State = grp_State.index.tolist()
 Diff = grp_State.Diff.tolist()
 Pct = grp_State.Pct_Prod_Profit_GT_Target.tolist()
 
-Product = grp_Prod.index.tolist()
-Profit = grp_Prod.Profit.tolist()
-Target = grp_Prod.TargetProfit.tolist()
+# hbar - top
+hbar = {
+  "title": {
+    "text": 'Actual vs. Target',
+    "subtext": 'What percentage of products are meeting their profit target in each state?',
+  },
+  "tooltip": {
+    "trigger": 'axis',
+    "axisPointer": {"type": 'shadow'},
+    },
+  "grid": [{"right": '55%'},
+           {"left": '55%'}],
+  "xAxis": [
+    {
+      "name": 'Difference Between Profit and Target',
+      "axisLabel": {"formatter": '$ {value}'},
+      "nameLocation": 'center',
+      "nameGap" : 40, 
+      "type": 'value',
+      "gridIndex": 0,
+      "position": 'bottom',
+      "splitLine": {"show": False}
+    },
+    {
+      "name": '% of Product Above Target',
+      "axisLabel": {"formatter": '{value} %'},
+      "min":0,
+      "max":100,
+      "nameLocation": 'center',
+      "nameGap" : 40, 
+      "type": 'value',
+      "gridIndex": 1,
+      "position": 'bottom',
+      "splitLine": {"show": False}
+    }],
+  "yAxis": [
+    {
+    "type": 'category',
+    "gridIndex": 0,
+    "axisLine": { "show": False },
+    # "axisLabel": { "show": False },
+    "axisTick": { "show": False },
+    "splitLine": { "show": False },
+    "data": State
+    },
+    {
+    "type": 'category',
+    "gridIndex": 1,
+    "axisLine": { "show": False },
+    "axisLabel": { "show": False },
+    "axisTick": { "show": False },
+    "splitLine": { "show": False },
+    "data": State
+    }],
+  "visualMap": 
+   {
+    "min": -900,
+    "max": 1200,
+    "show": False,
+    "dimension": 0,
+    "inRange": {"color": ['#e16a31', '#fb9a57', '#afd3de','#8ecbe4', '#4e6789']}
+    },
+  "series": [
+    {
+      "type": 'bar',
+      "stack": 'leftbar',
+      "data": Diff,
+      "xAxisIndex": 0,
+      "yAxisIndex": 0 
+    },
+    {
+      "type": 'bar',
+      "stack": 'rightbar',
+      "data": Pct,
+      "xAxisIndex": 1,
+      "yAxisIndex": 1
+    }
+  ]
+}
+events = {
+    "click": "function(params) { console.log(params.name); return params.name }"
+}
+state = st_echarts(hbar, events = events, height = 450)
 
-js_color = """function (params) {
-        if (params.value > 0) {
-                return '#90cee3';
-            } else {
-                return '#ffbb78';
-            }
-    }"""
+# bar - bottom
+if state in State:
+    idf_grp_Prod = df[df['State'] == state].groupby(['Product']).sum()[['Profit','TargetProfit']]
+else:
+    state = 'All'
+    idf_grp_Prod = df.groupby(['Product']).sum()[['Profit','TargetProfit']]
 
-b1 = (Bar()
-        .add_xaxis(State)
-        .add_yaxis('', 
-                   Diff,
-                   tooltip_opts = opts.TooltipOpts(
-                            trigger = "item", 
-                            formatter = "In <b>{b}</b> the difference between actual and target is <b>${c}</b>."),
-                   itemstyle_opts = opts.ItemStyleOpts(color = JsCode(js_color)),
-                    )
-        .reversal_axis()
-        .set_series_opts(label_opts = opts.LabelOpts(is_show = False))
-        .set_global_opts(
-            title_opts = opts.TitleOpts(
-                title = "Actual vs. Target",
-                subtitle = "What percentage of products are meeting their profit target in each state?"),
-            yaxis_opts = opts.AxisOpts(
-                name = "Difference Between Profit and Target",
-                name_location = 'start',
-                name_gap = 40,
-                axistick_opts = opts.AxisTickOpts(is_show = False),
-                    ),
-        )
-        #.render_notebook()
-    )
-b1
+idf_grp_Prod = idf_grp_Prod.sort_values(by = 'Profit', ascending = False)
+idf_grp_Prod['Color'] = idf_grp_Prod.apply(lambda x: 1 if x['Profit'] > x['TargetProfit'] else -1, axis = 1)
 
-b2 = (Bar()
-        .add_xaxis(State)
-        .add_yaxis('', 
-                   Pct,
-                   tooltip_opts = opts.TooltipOpts(
-                        trigger = "item", 
-                        formatter = "In <b>{b}</b> the percentage products above target is <b>{c}%</b>."),
-                   itemstyle_opts = opts.ItemStyleOpts(color = '#d6d2d2'),
-                    )
-        .reversal_axis()
-        .set_series_opts(label_opts = opts.LabelOpts(is_show = False))
-        .set_global_opts(
-            yaxis_opts = opts.AxisOpts(
-                is_show = False,
-                name = "% of Product Above Target",
-                name_location = 'start',
-                name_gap = 40,
-                axislabel_opts = opts.LabelOpts(formatter = "{value}%"),
-                axistick_opts = opts.AxisTickOpts(is_show = False),
-                    ),
-        )
-        #.render_notebook()
-    )
-b2
+ds = [list(z) for z in zip(idf_grp_Prod.index, idf_grp_Prod['Color'], idf_grp_Prod['Profit'], idf_grp_Prod['TargetProfit'])]
+ds.insert(0, ['Prod', 'Color', 'Profit', 'Target'])
 
-b3 = (Bar()
-        .add_xaxis(Product)
-        .add_yaxis('Profit', 
-                   Profit,
-                   itemstyle_opts = opts.ItemStyleOpts(
-                       color = '#90cee3' ),  # Color formatting                                     
-                   )
-        .add_yaxis('Target', 
-                   Target,
-                   itemstyle_opts = opts.ItemStyleOpts(
-                       color = '#ffbb78' ),  # Color formatting                                     
-            )
-        .set_series_opts(label_opts = opts.LabelOpts(is_show = False))
-        .set_global_opts(
-            yaxis_opts = opts.AxisOpts(
-                name = "Profit",
-                name_location = 'center',
-                name_gap = 60,
-                axistick_opts = opts.AxisTickOpts(is_show = False),
-                    ),
-        )
-        #.render_notebook()
-    )
+title_b = 'Profit vs Target Profit by Product in ' + state
 
-grid = (
-    Grid(init_opts = opts.InitOpts(width = "900px", height = "500px"))
-    .add(
-        b1, 
-        grid_opts = opts.GridOpts(pos_right = "58%", pos_bottom = "50%"), 
-        )
-    .add(
-        b2, 
-        grid_opts = opts.GridOpts(pos_left = "58%", pos_bottom = "50%"), 
-        )
-    .add(
-        b3, 
-        grid_opts = opts.GridOpts(pos_top = "60%"), 
-        )
-    .render_notebook()
-)
+bar_b = {
+  "dataset": {
+    "source": ds
+  },
+  "title": {
+    "text": title_b,
+    "left": 'center',
+  },
+  "tooltip": {
+    "trigger": 'axis',
+    "axisPointer": {"type": 'cross'}
+  },
+  "xAxis": [
+    {
+      "type": 'category',
+      "axisPointer": {"type": 'shadow'}
+    }
+  ],
+  "yAxis": [
+    {
+      "type": 'value',
+      "name": 'Profit',
+      "splitLine": {"show": False}
+    },
+  ],
+  "visualMap": {
+      "min": -1,
+      "max": 1,
+      "show": False,
+      "dimension": 1,
+      "inRange": {"color": ['#ff8e49', '#51a0d4']}
+      },
+  "series": [
+    {
+      "name": 'Profit',
+      "type": 'bar',
+      "encode": {"x": 'Prod', "y": 'Profit'}
+    },
+    {
+      "name": 'Target',
+      "type": 'line',
+      "encode": {"x": 'Prod', "y": 'Target'},
+      "symbol": 'circle',
+      "symbolSize": 10,
+      "lineStyle": {"width": 0}
+    }
+  ]
+}
 
-grid
+st_echarts(bar_b, height = 250)
 ```
 
 # Result
 
-![PY08](https://user-images.githubusercontent.com/79496040/192030251-729b8c46-deb7-4c96-8b81-2c3fb292a250.gif)
+![PY08](https://user-images.githubusercontent.com/79496040/192872558-50abf866-e5fe-4ff4-a08b-4eef242085fd.gif)
 
 ### Comments
 
-To-Do: Build a connection between different Bar() objects; 
+To-Do: Customize tooltips; 
