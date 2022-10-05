@@ -16,5 +16,5 @@ Select Round(Avg(Top_Deal)) as Avg_Top_Deal
 From (
 	Select SalesRep, Max(Top_Deal) as Top_Deal	
 	From Stats
-Group by SalesRep) a
+        Group by SalesRep) a
 ```
