@@ -1,8 +1,9 @@
 # Percent of Total
 
 ```sql
-Select Country, Market,
-    Round(Sum(Sales)/Sum(Sum(Sales)) Over() * 100) as Percent
-From lod4
-Group by Country, Market
+SELECT
+    Country, Market,
+    Round(SUM(Sales) / (SELECT SUM(Sales) FROM Superstore) * 100) AS Revenue_Percentage
+FROM lod4
+GROUP BY Country, Market;
 ```
