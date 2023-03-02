@@ -2,6 +2,7 @@
 
 ```R
 library(dplyr)
+library(plotly)
 
 data <- read.csv("/lod4rdemo/lod01.csv", header = TRUE, sep = ";")
 
