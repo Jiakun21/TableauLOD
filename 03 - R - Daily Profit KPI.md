@@ -8,19 +8,14 @@ library(lubridate)
 
 data <- read.csv("LOD4R/lod03.csv", header = TRUE, sep = "\t")
 
-data <- data %>% mutate(OrderDate = as.Date(OrderDate)) 
-
-DailyProfit <- data %>% group_by(OrderDate) %>% summarise(Profit = sum(Profit))
-
-DailyProfit <- DailyProfit %>%
+DailyProfit <- data %>% 
+  mutate(OrderDate = as.Date(OrderDate)) %>%
+  group_by(OrderDate) %>% summarise(Profit = sum(Profit)) %>%
   mutate(ProfitKPI = case_when(
-    Profit > 2000 ~ "Highly Profitable",
-    Profit < 0 ~ "Unprofitable",
-    TRUE ~ "Profitable"
-  ))
-
-DailyProfit <- DailyProfit %>% 
-  mutate(year = year(OrderDate),
+                          Profit > 2000 ~ "Highly Profitable",
+                          Profit < 0 ~ "Unprofitable",
+                          TRUE ~ "Profitable"),
+         year = year(OrderDate),
          monthNum = month(OrderDate),
          monthTxt = month(OrderDate, label = TRUE, abbr = FALSE)) %>%
   group_by(ProfitKPI, year, monthNum, monthTxt) %>%
@@ -42,7 +37,7 @@ ggplot(DailyProfit, aes(x = yymm, y = Cnt, fill = ProfitKPI)) +
 
 # Result
 
-![R03](https://user-images.githubusercontent.com/79496040/222834557-d9f8caa6-20ca-4752-b12d-3b88dc9571ff.png)
+![R03](https://user-images.githubusercontent.com/79496040/222861570-3bc7129c-adbd-4a45-b5d2-dd45da2d2b0a.png)
 
 # Comment
 
