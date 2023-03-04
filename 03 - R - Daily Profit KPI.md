@@ -37,7 +37,7 @@ ggplot(DailyProfit, aes(x = yymm, y = Cnt, fill = ProfitKPI)) +
 
 # Result
 
-![R03](https://user-images.githubusercontent.com/79496040/222861570-3bc7129c-adbd-4a45-b5d2-dd45da2d2b0a.png)
+![R03](https://user-images.githubusercontent.com/79496040/222862260-b5413dce-5267-4815-82f0-f6fe351a1274.png)
 
 # Comment
 
