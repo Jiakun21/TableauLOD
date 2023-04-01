@@ -97,15 +97,15 @@ server <- function(input, output) {
                   lineStyle = list(color = "#000000", type = "dashed", width = 1)) %>%
       e_tooltip(
         trigger = "axis",
-        formatter = htmlwidgets::JS("
-        function(params) {
-          var tooltip = '';
-          for (var i = 0; i < params.length; i++) {
-            tooltip +=  params[i].name + '`s largest deal size is $' + params[i].value[0] + ' compared to the average line'; 
-          }
-          return tooltip;
-        }
-      ")
+        formatter = JS(paste0("
+                function(params) {
+                  var tooltip = '<b>';
+                  for (var i = 0; i < params.length; i++) {
+                    tooltip +=  params[i].name + '`s </b> largest deal size is <b>$' + (params[i].value[0]*1).toFixed(0) + '</b> compared to the average of <b>$", round(mean(bar_data$TopSales)), "</b>'; 
+                  }
+                  return tooltip;
+                }
+      "))
       )
     
     bar_chart
@@ -121,9 +121,5 @@ shinyApp(ui = ui, server = server)
 
 # Result
 
-![R07](https://user-images.githubusercontent.com/79496040/225428277-45eefdd4-ff74-4d0f-a457-dcc959ce1ae4.gif)
+![R07_v2](https://user-images.githubusercontent.com/79496040/229302469-09b47762-d9eb-4f1a-9459-5db4c2ff1d93.gif)
 
-
-# Comment
-
-Will add the average to the tooltips
