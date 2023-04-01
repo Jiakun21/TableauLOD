@@ -1,8 +1,7 @@
 # New Customer Acquisition
 
 ```R
-library(plotly)
-library(ggplot2)
+library(echarts4r)
 library(dplyr)
 library(lubridate)
 
@@ -23,21 +22,33 @@ data2 <- data %>%
   mutate(RunningTotal = cumsum(DistCnt)) %>%
   select(-DistCnt)
 
-ggplotly(
-  ggplot(data2, aes(x = OrderDate, y = RunningTotal, color = Market, group = Market)) +
-    geom_line(size = 1.02, aes(text = paste("On ", format(OrderDate, "%Y-%m-%d"), ", ", Market, " acquired a total of ", RunningTotal, " customers."))) +
-    ggtitle("New Customer Acquisition") +
-    labs(x = "Day of Order Date", y = "Total Customers") +
-    scale_x_date(date_labels = "%Y-%m-%d") +
-    # theme(legend.position = "top") +
-    theme(plot.title = element_text(size = 14, face = "bold", color = "black"))
-, tooltip = "text")
+line_chart <- data2 %>%
+  e_charts(OrderDate) %>%
+  e_line(RunningTotal, symbol = 'circle') %>%
+  e_tooltip(
+    trigger = "item",
+    formatter = htmlwidgets::JS("
+          function(params) {
+            var content = 'On <b>' + params.value[0] + '</b>, ';
+            content += ' <b>' + params.seriesName + '</b> had acquired a total of  <b>'  + params.value[1] + '</b> customers.';
+            return content;
+          }
+        ")
+  ) %>%
+  e_title("New Customer Acquisition") %>%
+  e_y_axis(name = "Total Customers", 
+           nameLocation = "center",
+           nameGap = 40,) %>%
+  e_x_axis(name = "Day of Order Date", 
+           nameLocation = "center",
+           nameGap = 40,
+           type = "time") 
+
+line_chart
 ```
 
 # Result
 
-![R05](https://user-images.githubusercontent.com/79496040/223540179-9e1c7f68-e275-4c28-a8f7-2be55880b670.gif)
+![R05_v2](https://user-images.githubusercontent.com/79496040/229307826-f378f772-65ae-42e6-bd90-2927972450b7.gif)
 
-# Comment
 
-Adjust legend position
