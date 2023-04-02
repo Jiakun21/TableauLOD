@@ -1,35 +1,60 @@
 # Percent of Total
 
 ```R
-library(plotly)
+library(echarts4r)
+library(shiny)
+library(dplyr)
 
 # read in data
-data <- read.csv("LOD4R/lod04.csv", header = TRUE, sep = "\t")
+data <- read.csv("lod04.csv", header = TRUE, sep = "\t")
 
 Total_Sales <- sum(data$Sales)
 Total_Pct <- data %>% 
   group_by(Market, Country) %>% 
   summarise(Sales = sum(Sales), .groups = "drop") %>% 
   mutate(Pct = round(Sales/Total_Sales*100)) 
-Total_Pct <- Total_Pct[,-3]
 
-# Create a choropleth map with plotly
-fig <- plot_geo(Total_Pct, locationmode = "country names") %>% 
-  add_trace(z = ~Pct, locations = ~Country, 
-            text = ~paste("<b> ", Country, "</b> represents <b>", Pct, "% </b> of total sales globally."), 
-            type = "choropleth", 
-            c("#c9e9e0", "#a9d8d8", "#8bc7d0", "#69b4c7", "#5da0bb", "#5a8dac", "#557a9d"),
-            hovertemplate = "%{text}<extra></extra>") %>%
-  layout(title = "Total of Percent", geo = list(scope = "world"))
 
-# Show the plot
-fig
+# set up ui
+ui <- fluidPage(
+  selectInput("market", "Market", choices = unique(Total_Pct$Market)),
+  echarts4rOutput("map")
+)
+
+# set up server
+server <- function(input, output) {  
+  # filter data by selected market
+  filtered_data <- reactive({
+    Total_Pct %>% filter(Market == input$market)
+  })
+  
+  # create map
+  output$map <- renderEcharts4r({ 
+    filtered_data() %>% 
+      e_charts(Country) %>% 
+      e_map(Pct, map = "world") %>% 
+      e_visual_map(Pct,
+                   orient = "horizontal",
+                   bottom = 10,
+                   left = 600,
+                   inRange = list(color = c("#c9e9e0", "#a9d8d8", "#8bc7d0", "#69b4c7", "#5da0bb", "#5a8dac", "#557a9d"))
+                   ) %>% 
+      e_tooltip(formatter = htmlwidgets::JS("
+                function(params) {
+                  var content = '<b>' + params.name + '</b> represents <b>';
+                  content += params.value + '%</b> of total sales globally.';
+                  return content;
+                }
+                 ")) %>%
+      e_title("Total of Percent")    
+  })  
+}
+
+# run app
+shinyApp(ui = ui, server = server)
 ```
 
 # Result
 
-![R04](https://user-images.githubusercontent.com/79496040/223325460-4e059642-6ead-4ea1-be36-44d537021aef.gif)
+![R04_v2](https://user-images.githubusercontent.com/79496040/229325953-cb5e7c20-8352-45aa-9c04-4880403d5926.gif)
 
-# Comment
-
-Will add dropdown list
