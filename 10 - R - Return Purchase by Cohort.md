@@ -6,8 +6,8 @@ library(dplyr)
 library(zoo)
 library(reshape2)
 library(forcats)
-library(ggplot2)
-library(plotly)
+library(echarts4r)
+library(htmlwidgets)
 
 data <- read.csv("LOD4R/lod10.csv", header = TRUE, sep = ",")
 
@@ -16,48 +16,49 @@ First_Purchase <- data %>%
   group_by(CustomerID) %>%
   summarise(FirstPurchase = min(OrderDate))
 
-
 Return_Purchase <- unique(data[,c("CustomerID","OrderDate")]) %>%
   mutate(OrderDate = as.Date(OrderDate)) %>%
   group_by(CustomerID) %>%
   slice(2) %>%
   rename(ReturnPurchase = OrderDate) 
 
-
 combined <- left_join(First_Purchase, Return_Purchase, by = "CustomerID") 
 
-
 res <- combined %>%
-  mutate(YearQrt = as.yearqtr(FirstPurchase),
-         Diff = factor((year(ReturnPurchase) - year(FirstPurchase))*4 + quarter(ReturnPurchase) - quarter(FirstPurchase),
-                       levels = c(NA, 0:15))) %>%
-  group_by(YearQrt, Diff) %>%
-  summarise(DistCnt = n_distinct(CustomerID), .groups = 'drop') 
+  mutate(YearQrt = paste0(year(FirstPurchase)," Q",quarter(FirstPurchase)),
+         Diff = (year(ReturnPurchase) - year(FirstPurchase))*4 + quarter(ReturnPurchase) - quarter(FirstPurchase),
+         Diff_ = factor(ifelse(is.na(Diff), "Lapsed", Diff ), levels = c("Lapsed", 0:15))              
+         ) %>%
+  group_by(YearQrt, Diff_) %>%
+  summarise(DistCnt = n_distinct(CustomerID), .groups = 'drop') %>%
+  arrange(desc(YearQrt))
 
 
-ggplotly(
-  ggplot(data = res, 
-         aes(x = fct_rev(factor(Diff, levels = c(NA, 0:15))),
-             y = YearQrt, 
-             fill = DistCnt)) + 
-    geom_tile(aes(text = paste0("Among customers who first made a purchase in <b>", YearQrt, "</b>, <b>", DistCnt, "</b> waited <b>", Diff, "</b> quarters until their second purchase."))) + 
-    ggtitle("Return Purchase by Cohort") + 
-    xlab("Quarter to Repeat Purchase") +
-    ylab("Quarter of First Purchase") +
-    scale_fill_gradient(low = "#b8e2d7", high = "#2c5985") +
-    scale_y_reverse() +
-    # coord_flip() +
-    theme(legend.position = "none", 
-          axis.title.x.top = element_text(),
-          axis.text.x.top = element_text(angle = 180, hjust = 1)),
-  tooltip = "text")
+res %>%
+  e_charts(Diff_) %>%
+  e_heatmap(y = YearQrt, z = DistCnt) %>%
+  e_title("Return Purchase by Cohort") %>%
+  e_x_axis(name = "Quarter to Repeat Purchase", 
+           nameLocation = "center", 
+           nameGap = 30,
+           axisTick = list(show = FALSE),
+           position = "top",
+           type = "category") %>%
+  e_y_axis(name = "Quarter of 1st Purchase", 
+           axisTick = list(show = FALSE),
+           nameGap = 20
+           ) %>%
+  e_visual_map(DistCnt,
+               show = FALSE,
+               inRange = list(color = c("#b8e2d7", "#77bec8", "#368eae", "#2c5985"))) %>%
+  e_tooltip(formatter = JS(
+    "function(params) {
+      return 'Among customers who first made a purchase in <b>' + params.value[1] + '</b>,</br> <b>' + params.value[2] + '</b> waited <b>' + params.name + '</b> quarters until their second purchase.';
+    }"
+  ))
 
 ```
 
 # Result
 
-![R10](https://user-images.githubusercontent.com/79496040/226630155-ca9897e5-c86d-4acf-b158-f1ec1f4f3842.gif)
-
-# Comment
-Will adjust x axis position to the top </br>
-Will adjust x axis label order
+![R10_v2](https://user-images.githubusercontent.com/79496040/230251758-79fe1b7d-f84a-4754-bbd3-b2e5de173c0f.gif)
